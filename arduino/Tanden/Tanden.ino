@@ -10,10 +10,13 @@ MFRC522 rfid(SS_PIN, RST_PIN);
 
 MFRC522::MIFARE_Key key;
 
+int counter = 0;
+
 String n01 = "B5:8B:D1:65";
 String n02 = "51:35:A6:6C";
 String n03 = "91:F4:5A:8D"; 
 
+String mission[3];
 String succes[3] = {n01, n02, n03};
 
 void setup() {
@@ -23,7 +26,9 @@ void setup() {
 }
 
 void loop() {
-  if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial())
+  while(counter < 3){
+    
+     if (!rfid.PICC_IsNewCardPresent() || !rfid.PICC_ReadCardSerial())
     return;
 
   // Serial.print(F("PICC type: "));
@@ -46,13 +51,34 @@ void loop() {
     (i!=3 ? ":" : "");
   }
   strID.toUpperCase();
+  
+    if(strID == n01 || strID == n02 || strID == n03){
+      counter++;
+      if(counter == 1){
+        mission[0] = strID;
+        Serial.println("first scan: " + mission[0] + " count: " + counter);
+        strID = "";
+        delay(1000);
+        Serial.println("next scan please");
+      } else if(counter == 2){
+        mission[1] = strID;
+        Serial.println("second scan: " + mission[1] + " count: " + counter);
+        strID = "";
+        delay(1000);
+        Serial.println("next scan please");
+      } else if(counter == 3){
+        mission[2] = strID;
+        Serial.println("third scan: " + mission[2] + " count: " + counter);
+        strID = "";
+        delay(1000);
+      }
+     }
+  }
 
-  Serial.print("Tap card key: ");
-  Serial.println(strID);
-
-   if(strID == n01){
-
-   }
+for (int i=0;i<3;i++){
+  Serial.println(mission[i]);
+}
+delay(5000);
     
      
   rfid.PICC_HaltA();
