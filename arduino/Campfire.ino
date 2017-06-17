@@ -5,7 +5,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(12, PIN, NEO_GRB + NEO_KHZ800);
 const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
 const int analogOutPin = 9; // Analog output pin that the LED is attached to
 
-int sensorValue = 0;        // value read from the pot
+int potValue = 0;        // value read from the pot
 int outputValue = 0;        // value output to the PWM (analog out)
 
 int counter = 0;
@@ -20,15 +20,15 @@ void setup() {
 void loop() {
 
   // read the analog in value:
-  sensorValue = analogRead(analogInPin);
+  potValue = analogRead(analogInPin);
   // map it to the range of the analog out:
-  outputValue = map(sensorValue, 0, 1023, 0, 255);
+  outputValue = map(potValue, 0, 1023, 0, 255);
   // change the analog out value:
   analogWrite(analogOutPin, outputValue);
 
   // print the results to the serial monitor:
   Serial.print("sensor = ");
-  Serial.print(sensorValue);
+  Serial.print(potValue);
   Serial.print("\t output = ");
   Serial.print(outputValue);
   Serial.print("\t count = ");
@@ -39,7 +39,7 @@ void loop() {
   // after the last reading:
   delay(2);
 
-  if(sensorValue > 500 && sensorValue <550){
+  if(potValue > 500 && potValue <550){
       counter++;
     }
 
