@@ -1,3 +1,6 @@
+// This code simulates a campfire. This version uses an Adafruit Neopixel ring with 12 leds
+// The potentiometer is used to read the 'friction
+
 #include <Adafruit_NeoPixel.h>
 #define PIN 5
 
